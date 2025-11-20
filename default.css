@@ -20,4 +20,23 @@ a {color: red}
 .right-video {
     margin-left: 20px; /* khoảng cách giữa table và video */
 }
+.goto-top,
+.goto-bottom {
+    position: fixed;
+    right: 20px;
+    padding: 10px 15px;
+    background: #333;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.goto-top {
+    bottom: 80px; /* Nút ở trên */
+}
+
+.goto-bottom {
+    bottom: 20px; /* Nút ở dưới */
+}
+
 
