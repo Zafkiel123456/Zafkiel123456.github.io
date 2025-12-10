@@ -1,0 +1,12 @@
+.nav {background-color: #0066cc; overflow: hidden;}
+
+.nav li {display: inline;}
+
+.nav li a {color: #ffffff; font-family: Arial; text-decoration: none; padding: 20px;}
+ 
+.nav li a:hover {color: #0066cc; background-color: #ffffff;}
+.My-table {border: 1px solid red;border-collapse: collapse;width: 100%}
+.My-table td,th {padding: 10px;text-align: center;}
+.My-table th {background-color: blue;color: #fff;font-weight: bold}
+.My-table tr:nth-child(even) {background-color: #e5e5e5}
+.My-table tr:hover {background-color: palevioletred;}

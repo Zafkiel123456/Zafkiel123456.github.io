@@ -2,14 +2,15 @@ p {color: blacked;text-align: right;}
 h1 {color: yellow;text-align: center;font-size: 70px}
 h2 {color: lightyellow;font-size: 50px}
 h6 {color: yellow;}
-h3 {color: yellow;text-align: center;font-size: 40px;text-align: center;}
+h3 {color: yellow;text-align: center;font-size: 40px;}
 body {background-image: url("124.jpg");background-repeat: no-repeat;background-size: cover;background-position: center;background-attachment: fixed;}
-table {size: 200px;color: darkred;border-color: red;border-collapse: collapse;}
+table {color: darkred;border-color: red;border-collapse: collapse;}
 img src {size: 10px}
 a {color: red}
 th,td {background-color: deepskyblue; }
+td:hover {background-color: cyan;}
 li {text-align: right;}
-
+.my-table {width: 100%}
 
 
 
