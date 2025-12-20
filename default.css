@@ -48,5 +48,11 @@ li {text-align: right;}
 .goto-bottom {
     bottom: 20px; /* Nút ở dưới */
 }
+.nav {background-color: #0066cc; overflow: hidden;}
 
+.nav li {display: inline;}
+
+.nav li a {color: #ffffff; font-family: Arial; text-decoration: none; padding: 20px;}
+ 
+.nav li a:hover {color: #0066cc; background-color: #ffffff;}
 

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Học Từ Vựng Tiếng Anh</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #74ebd5, #9face6);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .box {
+        background: white;
+        padding: 30px;
+        width: 350px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    #word {
+        font-size: 26px;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #0077cc;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #005fa3;
+    }
+
+    #result {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Nhập nghĩa tiếng Việt</h2>
+    <div id="word">---</div>
+
+    <input type="text" id="answer" placeholder="Nhập nghĩa..." autofocus>
+
+    <button onclick="checkAnswer()">Kiểm tra</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+let words = [
+    { en: "account", vi: ["câu chuyện", "tài khoản"] },
+    { en: "achievement", vi: ["thành tích", "thành tựu"] },
+    { en: "admire", vi: ["ngưỡng mộ"] },
+    { en: "adopt", vi: ["nhận con nuôi","nhận nuôi"] },
+    { en: "animated", vi: ["hoạt hình"] },
+    { en: "attack", vi: ["cuộc tấn công", "tấn công"] },
+    { en: "attend", vi: ["đi học"] },
+    { en: "school college", vi: ["trường", "trường đại học", "cao đẳng"] },
+    { en: "battle", vi: ["chiến trường"] },
+    { en: "biography", vi: ["tiểu sử"] },
+    { en: "biological", vi: ["quan hệ ruột thịt",] },
+    { en: "bond", vi: ["kết thân"] },
+    { en: "defend", vi: ["phòng thủ"] },
+    { en: "job", vi: ["công việc","việc làm"] },
+    { en: "abyss", vi: ["vực thẳm"] },
+    { en: "wheel", vi: ["bánh xe"] },
+    { en: "costume", vi: ["trang phục"] },
+    { en: "customs", vi: ["hải quan","phong tục"] },
+    { en: "supercalifragilisticexpialidocious", vi: ["siêu tuyệt vời","cực kì tuyệt vời đến mức không thể tin được"] },
+    { en: "hippopotomonstrosesquippedaliophobia", vi: ["hội chứng sợ chữ dài"] },
+    { en: "monument", vi: ["tượng đài"] },
+    { en: "second hand", vi: ["đồ đã qua sử dụng"] },
+    { en: "by the way", vi: ["nhân tiện"] },
+    { en: "nonsense", vi: ["nhảm nhí","vô lý","vớ vẩn","không có ý nghĩa"] },
+    { en: "phasmophobia", vi: ["hội chứng sợ ma"] },
+    { en: "chain", vi: ["dây xích"] },
+    { en: "weird", vi: ["kỳ quặc","kỳ dị","kỳ quái"] },
+    { en: "felling blue", vi: ["buồn bã"] },
+    { en: "leg", vi: ["cái chân"] },
+    { en: "break", vi: ["phá vỡ"] },
+    { en: "break a leg", vi: ["chúc may mắn"] },
+    { en: "break up", vi: ["chia tay"] },
+    { en: "useless", vi: ["vô dụng"] },
+    { en: "meaningless", vi: ["vô nghĩa"] },
+    { en: "hopeless", vi: ["tuyệt vọng"] },
+    { en: "curse", vi: ["lời nguyền"] },
+    { en: "a bitter pill to swallow", vi: ["sự thật khó chấp nhận"] },
+    { en: "zip", vi: ["khóa kéo quần","khóa kéo áo"] },
+    { en: "lips", vi: ["đôi môi"] },
+    { en: "zip your lips", vi: ["im miệng lại"] },
+    { en: "i will be mother", vi: ["tôi sẽ rót trà"] },
+    { en: "gloomy", vi: ["ảm đạm"] },
+    { en: "upbeat", vi: ["lạc quan","vui vẻ"] },
+    { en: "out to lunch", vi: ["mất tập trung","không tỉnh táo","không không hiểu","tưng tửng","mát mát","ngô nghê","tẻn tẻn"] },
+    { en: "idealized beloved", vi: ["bạch nguyệt quang"] },
+    { en: "knock your socks off", vi: ["đủ bất ngờ rồi đó"] },
+    { en: "deduction skill", vi: ["kỹ năng suy luận"] },
+];
+
+let currentWord = null;
+
+// Random không lặp
+function nextWord() {
+    if (words.length === 0) {
+        document.getElementById("word").innerText = "🎉 Hoàn thành!";
+        document.getElementById("result").innerText = "Bạn đã học hết từ vựng 👏";
+        document.getElementById("answer").disabled = true;
+        return;
+    }
+
+    let index = Math.floor(Math.random() * words.length);
+    currentWord = words[index];
+    words.splice(index, 1);
+
+    document.getElementById("word").innerText = currentWord.en;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+// Kiểm tra đáp án
+function checkAnswer() {
+    let userInput = document.getElementById("answer").value.trim().toLowerCase();
+
+    let correct = currentWord.vi.some(v =>
+        v.toLowerCase() === userInput
+    );
+
+    if (correct) {
+        document.getElementById("result").innerText = "✅ Đúng rồi!";
+        setTimeout(nextWord, 800);
+    } else {
+        document.getElementById("result").innerText =
+            "❌ Sai! Gợi ý: " + currentWord.vi.join(", ");
+    }
+}
+
+// Nhấn Enter để kiểm tra
+document.getElementById("answer").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        checkAnswer();
+    }
+});
+
+// Bắt đầu
+nextWord();
+</script>
+
+</body>
+</html>
