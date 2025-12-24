@@ -2,97 +2,118 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Học Từ Vựng Tiếng Anh</title>
+<title>Học Từ Vựng</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #74ebd5, #9face6);
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .box {
-        background: white;
-        padding: 30px;
-        width: 350px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        text-align: center;
-    }
-
-    h2 {
-        color: #333;
-    }
-
-    #word {
-        font-size: 26px;
-        font-weight: bold;
-        margin: 20px 0;
-        color: #0077cc;
-    }
-
-    input {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-
-    button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background: #0077cc;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background: #005fa3;
-    }
-
-    #result {
-        margin-top: 15px;
-        font-weight: bold;
-    }
-    .contact {
-    position: fixed;   /* QUAN TRỌNG */
-    bottom: 10px;      /* cách đáy màn hình */
-    right: 10px;       /* cách mép phải màn hình */
-
+body {
     margin: 0;
-    padding: 10px 15px;
-
-    color: white;
-    border-radius: 8px;
-    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    height: 100vh;
 }
 
+/* BOX HỌC TỪ */
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+#word {
+    font-size: 26px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #0077cc;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 16px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* ĐIỂM GÓC PHẢI */
+#scoreBox {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* BẢNG XẾP HẠNG BÊN TRÁI */
+#leaderboard {
+    position: fixed;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    background: white;
+    padding: 15px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#leaderboard h3 {
+    text-align: center;
+    margin-top: 0;
+}
+
+#leaderboard ol {
+    padding-left: 20px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- BẢNG ĐIỂM -->
+<div id="scoreBox">Điểm: 0</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard">
+    <h3>🏆 BXH</h3>
+    <ol id="rankList"></ol>
+</div>
+
+<!-- HỌC TỪ -->
 <div class="box">
     <h2>Nhập nghĩa tiếng Việt</h2>
     <div id="word">---</div>
-
-    <input type="text" id="answer" placeholder="Nhập nghĩa..." autofocus>
-
+    <input id="answer" placeholder="Nhập nghĩa..." autofocus>
     <button onclick="checkAnswer()">Kiểm tra</button>
-
     <div id="result"></div>
 </div>
 
 <script>
 let words = [
-    { en: "account", vi: ["câu chuyện", "tài khoản"] },
+{ en: "account", vi: ["câu chuyện", "tài khoản"] },
     { en: "achievement", vi: ["thành tích", "thành tựu"] },
     { en: "admire", vi: ["ngưỡng mộ"] },
     { en: "adopt", vi: ["nhận con nuôi","nhận nuôi"] },
@@ -281,68 +302,72 @@ let words = [
 ];
 
 let currentWord = null;
+let wrongQueue = [];
+let score = 0;
 
-// Random không lặp
+/* RANDOM TỪ */
 function nextWord() {
-    if (words.length === 0) {
-        document.getElementById("word").innerText = "🎉 Hoàn thành!";
-        document.getElementById("result").innerText = "Bạn đã học hết từ vựng 👏";
-        document.getElementById("answer").disabled = true;
-        return;
+    if (wrongQueue.length > 0 && Math.random() < 0.3) {
+        currentWord = wrongQueue.shift();
+    } else {
+        if (words.length === 0) {
+            document.getElementById("word").innerText = "🎉 Xong!";
+            return;
+        }
+        let i = Math.floor(Math.random() * words.length);
+        currentWord = words.splice(i, 1)[0];
     }
-
-    let index = Math.floor(Math.random() * words.length);
-    currentWord = words[index];
-    words.splice(index, 1);
 
     document.getElementById("word").innerText = currentWord.en;
     document.getElementById("answer").value = "";
     document.getElementById("result").innerText = "";
 }
 
-// Kiểm tra đáp án
+/* KIỂM TRA */
 function checkAnswer() {
-    let userInput = document.getElementById("answer").value.trim().toLowerCase();
-
-    let correct = currentWord.vi.some(v =>
-        v.toLowerCase() === userInput
-    );
+    let input = document.getElementById("answer").value.trim().toLowerCase();
+    let correct = currentWord.vi.some(v => v === input);
 
     if (correct) {
-        document.getElementById("result").innerText = "✅ Đúng rồi!";
-        setTimeout(nextWord, 800);
+        score += 10;
+        document.getElementById("scoreBox").innerText = "Điểm: " + score;
+        document.getElementById("result").innerText = "✅ Đúng!";
+        setTimeout(nextWord, 600);
     } else {
         document.getElementById("result").innerText =
-            "❌ Sai! Gợi ý: " + currentWord.vi.join(", ");
+            "❌ Sai – Gợi ý: " + currentWord.vi.join(", ");
+        wrongQueue.push(currentWord);
     }
 }
 
-// Nhấn Enter để kiểm tra
-document.getElementById("answer").addEventListener("keydown", function(e) {
+/* LƯU & HIỆN BXH */
+function updateLeaderboard() {
+    let list = JSON.parse(localStorage.getItem("rank") || "[]");
+    list.push(score);
+    list.sort((a,b)=>b-a);
+    list = list.slice(0,5);
+    localStorage.setItem("rank", JSON.stringify(list));
+
+    let ol = document.getElementById("rankList");
+    ol.innerHTML = "";
+    list.forEach(s => {
+        let li = document.createElement("li");
+        li.innerText = s + " điểm";
+        ol.appendChild(li);
+    });
+}
+document.getElementById("answer").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
         checkAnswer();
     }
 });
 
-// Bắt đầu
+window.onbeforeunload = updateLeaderboard;
+
+/* QUAN TRỌNG */
 nextWord();
+updateLeaderboard();
 </script>
 
 </body>
 </html>
-<ul type="circle" class="contact"> Đội Ngũ
-    <li>Creator:Lê Hàng Huy</li>
-    <li>Designer:Nguyễn Lê Thanh An</li>
-    <li>Designer:Nguyễn Đình Hồng Quân</li>
-    <li>Designer:Lê Huỳnh Anh Quân</li>
-</ul>
-
-
-
-
-
-
-
-
-
-
