@@ -10,3 +10,8 @@
 .My-table th {background-color: blue;color: #fff;font-weight: bold}
 .My-table tr:nth-child(even) {background-color: #e5e5e5}
 .My-table tr:hover {background-color: palevioletred;}
+h2 {color: firebrick;font-family: Verdana;}
+h3 {color: indianred;}
+label {font-size: 20px;font-weight: bold;}
+input {background-color: yellow;}
+textarea {background-color: ivory;}
