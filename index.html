@@ -51,13 +51,27 @@
    
 </head>
 <body>
-<div class="nav">
-<ul>
-<li><a href="cautrucav.html">Random cấu trúc từ</a></li>
-<li><a href="tuvung.html">Random Từ Vựng</a></li>
-<li><a href="tuvung1.html">Random uni1-5</a></li>
-</ul>
+<!-- MENU BAR -->
+<div class="menu-bar">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+    <ul class="menu-list" id="menu">
+        <li><a href="tuvung.html">Random từ vựng ngẫu nhiên</a></li>
+        <li><a href="cautrucav.html">Random cấu trúc từ</a></li>
+        <li><a href="tuvung1.html">Random từ vựng Unit1-5</a></li>
+    </ul>
 </div>
+<script>
+function toggleMenu() {
+    const menu = document.getElementById("menu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+</script>
+
 <!-- Màn hình intro -->
 <div id="intro">
     <h1>Chào mừng bạn!</h1>
@@ -115,34 +129,6 @@
 <div id="top"></div>
 <a href="#bottom" class="goto-bottom">▼ Xuống cuối</a>
 <a href="#top" class="goto-top">▲ Lên đầu</a>
-
-<input type="text" id="searchBox" placeholder="Tìm kiếm" onkeyup="searchTable()">
-<script>
-function searchTable() {
-    const searchText = document.getElementById("searchBox").value.toLowerCase();
-    const table = document.getElementById("myTable");
-
-    // Xóa highlight cũ
-    table.querySelectorAll("mark").forEach(mark => {
-        mark.replaceWith(document.createTextNode(mark.textContent));
-    });
-
-    if (searchText === "") return;
-
-    // Duyệt từng ô trong table
-    table.querySelectorAll("td, th").forEach(cell => {
-        const cellText = cell.textContent;
-        const regex = new RegExp(searchText, "gi");
-        if(regex.test(cellText)){
-            cell.innerHTML = cellText.replace(regex, match => `<mark>${match}</mark>`);
-        }
-    });
-
-    // Scroll tới chữ đầu tiên
-    const firstMark = table.querySelector("mark");
-    if(firstMark) firstMark.scrollIntoView({behavior: "smooth", block: "center"});
-}
-</script>
 
 <div class="row-container">
     <div class="left-table"> 			
@@ -492,4 +478,3 @@ function searchTable() {
 </div>
 <a href="https://www.tiktok.com/@_bbimonkeys.a4_" target="_blank"><img src="tikto.jpg"></a>
 <div id="bottom"></div>
-

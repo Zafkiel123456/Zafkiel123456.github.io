@@ -9,7 +9,7 @@ img src {size: 10px}
 a {color: red}
 th,td {background-color: deepskyblue; }
 td:hover {background-color: cyan;}
-li {text-align: right;}
+li {text-align: left;}
 .my-table {width: 100%}
 
 
@@ -48,11 +48,53 @@ li {text-align: right;}
 .goto-bottom {
     bottom: 20px; /* Nút ở dưới */
 }
-.nav {background-color: #0066cc; overflow: hidden;}
+/* Thanh menu cố định */
+.menu-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 50px;
+    background: #0077cc;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 9999;
+}
 
-.nav li {display: inline;}
+/* Nút 3 gạch */
+.menu-icon {
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+}
 
-.nav li a {color: #ffffff; font-family: Arial; text-decoration: none; padding: 20px;}
- 
-.nav li a:hover {color: #0066cc; background-color: #ffffff;}
+/* Danh sách menu */
+.menu-list {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background: white;
+    width: 470px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* ẨN KHI MỚI VÀO WEB */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
 
+/* Từng dòng */
+.menu-list li {
+    border-bottom: 1px solid #ddd;
+}
+
+.menu-list li a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: #333;
+}
+
+.menu-list li a:hover {
+    background: #f0f0f0;
+}
