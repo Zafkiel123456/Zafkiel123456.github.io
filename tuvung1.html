@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Học Từ Vựng</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    height: 100vh;
+}
+
+/* BOX HỌC TỪ */
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+#word {
+    font-size: 26px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #0077cc;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 16px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* ĐIỂM GÓC PHẢI */
+#scoreBox {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* BẢNG XẾP HẠNG BÊN TRÁI */
+#leaderboard {
+    position: fixed;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    background: white;
+    padding: 15px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#leaderboard h3 {
+    text-align: center;
+    margin-top: 0;
+}
+
+#leaderboard ol {
+    padding-left: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BẢNG ĐIỂM -->
+<div id="scoreBox">Điểm: 0</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard">
+    <h3>🏆 BXH</h3>
+    <ol id="rankList"></ol>
+</div>
+
+<!-- HỌC TỪ -->
+<div class="box">
+    <h2>Nhập nghĩa tiếng Việt</h2>
+    <div id="word">---</div>
+    <input id="answer" placeholder="Nhập nghĩa..." autofocus>
+    <button onclick="checkAnswer()">Kiểm tra</button>
+    <div id="result"></div>
+</div>
+
+<script>
+let words = [
+    { en: "account", vi: ["câu chuyện", "tài khoản"] },
+    { en: "achievement", vi: ["thành tích", "thành tựu"] },
+    { en: "admire", vi: ["ngưỡng mộ"] },
+    { en: "adopt", vi: ["nhận con nuôi","nhận nuôi"] },
+    { en: "animated", vi: ["hoạt hình"] },
+    { en: "attack", vi: ["cuộc tấn công", "tấn công"] },
+    { en: "attend", vi: ["đi học"] },
+    { en: "school college", vi: ["trường", "trường đại học", "cao đẳng"] },
+    { en: "battle", vi: ["chiến trường","trận chiến"] },
+    { en: "biography", vi: ["tiểu sử"] },
+    { en: "biological", vi: ["quan hệ ruột thịt",] },
+    { en: "surgeon", vi: ["Bác sĩ phẫu thuật"] },
+    { en: "resistence", vi: ["sự chống lại"] },
+    { en: "enemy", vi: ["kẻ thù"] },
+    { en: "soldier", vi: ["người lính","quân nhân"] },
+    { en: "devote", vi: ["cống hiến"] },
+    { en: "youth", vi: ["tuổi trẻ"] },
+    { en: "childhood", vi: ["tuổi thơ"] },
+    { en: "marriage", vi: ["cuộc hôn nhân"] },
+    { en: "phonograph", vi: ["máy quay đĩa","kèn hát"] },
+    { en: "bond over", vi: ["gắn kết"] },
+    { en: "cutting-edge", vi: ["vượt trội"] },
+    { en: "blockbuster", vi: ["phim bom tấn"] },
+    { en: "diagnose", vi: ["chẩn đoán"] },
+    { en: "visionary", vi: ["có tầm nhìn xa"] },
+    { en: "drop out", vi: ["bỏ học"] },
+    { en: "genius", vi: ["thiên tài"] },
+    { en: "The communist Party of VietNam", vi: ["Đảng cộng sản Việt Nam","đcsvn"] },
+    { en: "campaign", vi: ["chiến dịch"] },
+    { en: "pass away", vi: ["qua đời"] },
+    { en: "carry out", vi: ["tiến hành","thực hiện"] },
+    { en: "poetry", vi: ["thơ ca"] },
+    { en: "poem", vi: ["bài thơ"] },
+    { en: "rule", vi: ["cai trị"] },
+    { en: "ambitious", vi: ["có tham vọng"] },
+    { en: "defeat", vi: ["đánh bại"] },
+    { en: "dedicated", vi: ["tận tụy"] },
+    { en: "determination", vi: ["sự quyết tâm"] },
+    { en: "expand", vi: ["mở rộng"] },
+    { en: "over the moon", vi: ["sung sướng"] },
+    { en: "on top of the world", vi: ["cực hạnh phúc"] },
+    { en: "inspire", vi: ["truyền cảm hứng"] },
+    { en: "profitable", vi: ["sinh lãi","lợi nhuận"] },
+    { en: "theme park", vi: ["công việc giải trí"] },
+    { en: "dwarf", vi: ["chú lùn"] },
+    { en: "feature-length", vi: ["có độ dài tiêu chuẩn"] },
+    { en: "live-action", vi: ["có người thật đóng"] },
+    { en: "producer", vi: ["nhà sản xuất"] },
+    { en: "cultural diversity", vi: ["đa dạng văn hóa"] },
+    { en: "cuisine", vi: ["ẩm thực"] },
+    { en: "autograph", vi: ["chữ ký"] },
+    { en: "booth", vi: ["gian hàng"] },
+    { en: "tug of war", vi: ["kéo co"] },
+    { en: "spring rolls", vi: ["chả cuốn"] },
+    { en: "meatballs", vi: ["thịt viên"] },
+    { en: "tourist attractions", vi: ["điểm thu hút khách du lịch"] },
+    { en: "origin", vi: ["nguồn gốc"] },
+    { en: "popularity", vi: ["danh tiếng"] },
+    { en: "identity", vi: ["bản sắc"] },
+    { en: "festivity", vi: ["mùa lễ hội"] },
+    { en: "trend", vi: ["xu hướng"] },
+    { en: "globalization", vi: ["sự toàn cầu hóa"] },
+    { en: "custom", vi: ["phong tục"] },
+    { en: "ingredient", vi: ["nguyên liệu"] },
+    { en: "specialty", vi: ["đặc sản"] },
+    { en: "captivate", vi: ["thu hút"] },
+    { en: "keep up with", vi: ["theo kịp"] },
+    { en: "cross-cultural", vi: ["giao thoa văn hóa"] },
+    { en: "professional", vi: [""] },
+    { en: "food stall", vi: ["gian hàng ăn"] },
+    { en: "trick or treat", vi: ["cho kẹo hay bị ghẹo"] },
+    { en: "haunted house", vi: ["ngôi nhà kinh dị"] },
+    { en: "annual", vi: ["hằng năm"] },
+    { en: "appeal", vi: ["sự hấp dẫn cuốn hút"] },
+    { en: "extracurricular", vi: ["ngoại khóa"] },
+    { en: "ignore", vi: ["lờ đi","bỏ qua"] },
+    { en: "anxiety", vi: ["lo âu"] },
+    { en: "confusion", vi: ["sự khó hiểu"] },
+    { en: "language barrier", vi: ["rào cản ngôn ngữ"] },
+    { en: "insulting", vi: ["xúc phạm"] },
+    { en: "decompose", vi: ["phân hủy"] },
+    { en: "measure", vi: ["đo lường","thước đo"] },
+    { en: "refill", vi: ["làm đầy lại"] },
+    { en: "reusable", vi: ["tái sử dụng"] },
+    { en: "throw away", vi: ["vứt đi"] },
+    { en: "bury", vi: ["chôn","chôn vùi"] },
+    { en: "container", vi: ["thùng","hộp","gói"] },
+    { en: "landfill", vi: ["bãi chôn rác"] },
+    { en: "packaging", vi: ["bao bì"] },
+    { en: "water tap", vi: ["vòi nước"] },
+    { en: "waste", vi: ["lãng phí","rác","rác thải"] },
+    { en: "work out", vi: ["tìm ra"] },
+    { en: "leftover food", vi: ["thức ăn thừa"] },
+    { en: "rinse out", vi: ["rửa sạch"] },
+    { en: "contaminated", vi: ["bị ô nhiễm"] },
+    { en: "get rid of", vi: ["thoát khỏi"] },
+    { en: "drinking fountain", vi: ["đài phun nước uống"] },
+    { en: "compost", vi: ["phân hủy"] },
+    { en: "layer", vi: ["lớp"] },
+    { en: "house hold waste", vi: ["rác thải sinh hoạt"] },
+    { en: "pile", vi: ["một đống","chồng"] },
+    { en: "fruit peel", vi: ["vỏ trái cây"] },
+    { en: "fertilizer", vi: ["phân bón"] },
+    { en: "production", vi: ["sự quan xuất"] },
+    { en: "propose", vi: ["đề xuất"] },
+    { en: "urbanization", vi: ["đô thị hóa"] },
+    { en: "afford", vi: ["có đủ khả năng"] },
+    { en: "decrease", vi: ["giảm"] },
+    { en: "increase", vi: ["tăng"] },
+    { en: "proportion", vi: ["tỷ lệ","sự phân bố"] },
+    { en: "rapidly", vi: ["nhanh chóng"] },
+    { en: "reliable", vi: ["đáng tin cậy"] },
+    { en: "rush hour", vi: ["giờ cao điểm"] },
+    { en: "seek", vi: ["tìm kiếm"] },
+    { en: "unemployment", vi: ["thất nghiệp"] },
+    { en: "resident", vi: ["cư dân","người dân"] },
+    { en: "gradually", vi: ["dần dần"] },
+    { en: "colonial", vi: ["thực dân"] },
+    { en: "concern", vi: ["mối lo lăng","quan tâm"] },
+    { en: "empty road", vi: ["đường vắng"] },
+    { en: "convenience store", vi: ["cửa hàng tiện lợi"] },
+    { en: "medical facilities", vi: ["trang thiết bị y tế"] },
+    { en: "exposure", vi: ["sự phơi nhiễm","sự tiếp xúc"] },
+    { en: "local authority", vi: ["chính quyền địa phương"] },
+    { en: "accountant", vi: ["kế toán viên"] },
+    { en: "client", vi: ["khách hàng","thân chủ"] },
+    { en: "nine-to-five", vi: ["giờ hành chính"] },
+    { en: "programming", vi: ["lập trình"] },
+    { en: "regulations", vi: ["nội quy"] },
+    { en: "shift", vi: ["ca làm việc"] },
+    { en: "working relationship", vi: ["mối quan hệ công việc"] },
+    { en: "babysitter", vi: ["người trông trẻ"] },
+    { en: "bonus", vi: ["tiền thưởng"] },
+    { en: "challenging", vi: ["thử thách"] },
+    { en: "employ", vi: ["tuyển dụng"] },
+    { en: "relevant", vi: ["có liên quan"] },
+    { en: "retire", vi: ["nghỉ hưu"] },
+    { en: "rewarding", vi: ["xứng đáng","đáng giá"] },
+    { en: "target", vi: ["mục tiêu"] },
+    { en: "well-paid", vi: ["được trả lương cao"] },
+    { en: "unpaid", vi: ["không được trả lương"] },
+    { en: "wage", vi: ["tiền công"] },
+    { en: "donation", vi: ["quyên góp"] },
+    { en: "overtime pay", vi: ["tiền tăng ca"] },
+    { en: "responsibility", vi: ["trách nhiệm"] },
+    { en: "demanding", vi: ["đòi hỏi cao","yêu cầu cao"] },
+    { en: "product reviewer", vi: ["người đánh giá"] },
+    { en: "repetitive", vi: ["lặp đi lặp lại"] },
+    { en: "shop assistant", vi: ["nhân viên bán hàng"] },
+    { en: "supervise", vi: ["giám sát","quản lí"] },
+    { en: "teaching assistant", vi: ["trợ giảng"] },
+    { en: "tiring", vi: ["mệt mỏi","gây mệt mỏi"] },
+    { en: "application letter", vi: ["thư xin việc"] },
+    { en: "interview", vi: ["phỏng vấn"] },
+    { en: "wait on tables", vi: ["phục vụ đồ ăn thức uống cho khách hàng"] },
+    { en: "customer", vi: ["khách hàng"] },
+    { en: "interfere with", vi: ["can thiệp vào"] },
+];
+
+let currentWord = null;
+let wrongQueue = [];
+let score = 0;
+
+/* RANDOM TỪ */
+function nextWord() {
+    if (wrongQueue.length > 0 && Math.random() < 0.3) {
+        currentWord = wrongQueue.shift();
+    } else {
+        if (words.length === 0) {
+            document.getElementById("word").innerText = "🎉 Xong!";
+            return;
+        }
+        let i = Math.floor(Math.random() * words.length);
+        currentWord = words.splice(i, 1)[0];
+    }
+
+    document.getElementById("word").innerText = currentWord.en;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+/* KIỂM TRA */
+function checkAnswer() {
+    let input = document.getElementById("answer").value.trim().toLowerCase();
+    let correct = currentWord.vi.some(v => v === input);
+
+    if (correct) {
+        score += 10;
+        document.getElementById("scoreBox").innerText = "Điểm: " + score;
+        document.getElementById("result").innerText = "✅ Đúng!";
+        setTimeout(nextWord, 600);
+    } else {
+        document.getElementById("result").innerText =
+            "❌ Sai – Gợi ý: " + currentWord.vi.join(", ");
+        wrongQueue.push(currentWord);
+    }
+}
+
+/* LƯU & HIỆN BXH */
+function updateLeaderboard() {
+    let list = JSON.parse(localStorage.getItem("rank") || "[]");
+    list.push(score);
+    list.sort((a,b)=>b-a);
+    list = list.slice(0,5);
+    localStorage.setItem("rank", JSON.stringify(list));
+
+    let ol = document.getElementById("rankList");
+    ol.innerHTML = "";
+    list.forEach(s => {
+        let li = document.createElement("li");
+        li.innerText = s + " điểm";
+        ol.appendChild(li);
+    });
+}
+document.getElementById("answer").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        checkAnswer();
+    }
+});
+
+window.onbeforeunload = updateLeaderboard;
+
+/* QUAN TRỌNG */
+nextWord();
+updateLeaderboard();
+</script>
+
+</body>
+</html>
