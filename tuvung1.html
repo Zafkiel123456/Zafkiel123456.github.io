@@ -319,6 +319,8 @@ function checkAnswer() {
         document.getElementById("result").innerText = "✅ Đúng!";
         setTimeout(nextWord, 600);
     } else {
+        score -=20;
+        document.getElementById("scoreBox").innerText = "Điểm: " - score;
         document.getElementById("result").innerText =
             "❌ Sai – Gợi ý: " + currentWord.vi.join(", ");
         wrongQueue.push(currentWord);
