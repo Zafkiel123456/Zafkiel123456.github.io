@@ -216,7 +216,7 @@ let words = [
     { en: "pile", vi: ["một đống","chồng"] },
     { en: "fruit peel", vi: ["vỏ trái cây"] },
     { en: "fertilizer", vi: ["phân bón"] },
-    { en: "production", vi: "sự sản xuất"] },
+    { en: "production", vi: ["sự sản xuất"] },
     { en: "propose", vi: ["đề xuất"] },
     { en: "urbanization", vi: ["đô thị hóa"] },
     { en: "afford", vi: ["có đủ khả năng"] },
@@ -297,7 +297,7 @@ function nextWord() {
 /* KIỂM TRA */
 function checkAnswer() {
     let input = document.getElementById("answer").value.trim().toLowerCase();
-    let correct = currentWord.vi.some(v => v === input);
+    let correct = currentWord.vi.some(v => v.toLowerCase === input);
 
     if (correct) {
         score += 10;
@@ -342,4 +342,5 @@ updateLeaderboard();
 
 </body>
 </html>
+
 
