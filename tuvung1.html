@@ -297,7 +297,7 @@ function nextWord() {
 /* KIỂM TRA */
 function checkAnswer() {
     let input = document.getElementById("answer").value.trim().toLowerCase();
-    let correct = currentWord.vi.some(v => v.toLowerCase === input);
+    let correct = currentWord.vi.some(v => v.trim().toLowerCase() === input);
 
     if (correct) {
         score += 10;
@@ -342,5 +342,6 @@ updateLeaderboard();
 
 </body>
 </html>
+
 
 
