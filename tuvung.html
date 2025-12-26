@@ -88,10 +88,24 @@ button {
 #leaderboard ol {
     padding-left: 20px;
 }
+#themeBox {
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background: rgba(255,255,255,0.8);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
 </style>
 </head>
 
 <body>
+<div id="themeBox">
+    🎨 Màu nền:
+    <input type="color" id="bgColor">
+</div>
 
 <!-- BẢNG ĐIỂM -->
 <div id="scoreBox">Điểm: 0</div>
@@ -113,7 +127,7 @@ button {
 
 <script>
 let words = [
-{ en: "account", vi: ["câu chuyện", "tài khoản"] },
+    { en: "account", vi: ["câu chuyện", "tài khoản"] },
     { en: "achievement", vi: ["thành tích", "thành tựu"] },
     { en: "admire", vi: ["ngưỡng mộ"] },
     { en: "adopt", vi: ["nhận con nuôi","nhận nuôi"] },
@@ -298,7 +312,7 @@ let words = [
     { en: "endure", vi: ["chịu đựng"] },
     { en: "engage", vi: ["tham gia"] },
     { en: "expand", vi: ["mở rộng"] },
-    { en: "expect", vi: ["mong đợi"] },
+    { en: "expect", vi: ["mong đợi"] },    
 ];
 
 let currentWord = null;
@@ -326,7 +340,7 @@ function nextWord() {
 /* KIỂM TRA */
 function checkAnswer() {
     let input = document.getElementById("answer").value.trim().toLowerCase();
-    let correct = currentWord.vi.some(v => v === input);
+    let correct = currentWord.vi.some(v => v.trim().toLowerCase() === input);
 
     if (correct) {
         score += 10;
@@ -363,6 +377,20 @@ document.getElementById("answer").addEventListener("keydown", function (e) {
 });
 
 window.onbeforeunload = updateLeaderboard;
+const colorPicker = document.getElementById("bgColor");
+
+/* Load màu cũ */
+let savedColor = localStorage.getItem("bgColor");
+if (savedColor) {
+    document.body.style.background = savedColor;
+    colorPicker.value = savedColor;
+}
+
+/* Khi người dùng đổi màu */
+colorPicker.addEventListener("input", function () {
+    document.body.style.background = this.value;
+    localStorage.setItem("bgColor", this.value);
+});
 
 /* QUAN TRỌNG */
 nextWord();
@@ -371,3 +399,5 @@ updateLeaderboard();
 
 </body>
 </html>
+
+
