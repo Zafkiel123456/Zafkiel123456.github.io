@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Web Trắc Nghiệm</title>
+<link rel="stylesheet" href="tonghopmon.css">
+
+<style>
+body {background-color: lightcyan;}
+.quiz-box {
+    background: darkcyan;
+    width: 400px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+h2 {
+    font-size: 18px;
+}
+
+.option {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #dbeafe;
+}
+
+#result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#score {
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+    <h2 id="question">---</h2>
+
+    <div id="options"></div>
+
+    <div id="result"></div>
+    <div id="score">Điểm: 0</div>
+</div>
+
+<script>
+/* ====== DỮ LIỆU CÂU HỎI ====== */
+let questions = [
+    {
+  question: "Câu 1:Mục tiêu chính của Liên Hợp Quốc là",
+  options: [
+    "Duy trì hòa bình và an ninh thế giới.",
+    "Giúp đỡ các dân tộc về y tế, giáo dục.",
+    "Thúc đẩy sự phát triển thương mại quốc tế.",
+    "Gìn giữ các di sản văn hóa của nhân loại."
+  ],
+  answer: 0
+},
+    {
+    question: "Câu 2:Hội nghị Ianta (2/1945) gồm nguyên thủ của những cường quốc nào?",
+    options: [
+      "Mỹ, Liên Xô, Đức",
+      "Anh, Mỹ, Italia",
+      "Mỹ, Anh, Liên Xô",
+      "Anh, Liên Xô, Nhật Bản"
+    ],
+    answer: 2
+  },
+    {
+    question: "Câu 3:Một trong những biểu hiện suy yếu của Trật tự hai cực Ianta là",
+    options: [
+      "NATO thành lập (1949)",
+      "Hiệp ước Vác-xa-va thành lập (1955)",
+      "Năm 1972, Mĩ và Liên Xô ký Hiệp ước Chống tên lửa đạn đạo",
+      "Mĩ can thiệp chiến tranh Đông Dương (1945–1954)"
+    ],
+    answer: 2
+  },
+    {
+    question: "Câu 4:Sự kiện đánh dấu Trật tự hai cực Ianta sụp đổ là",
+    options: [
+      "Chiến tranh lạnh chấm dứt (1989)",
+      "Liên Xô tan rã (12/1991)",
+      "Mĩ đề ra kế hoạch Mác-san (1947)",
+      "Bức tường Berlin sụp đổ (1989)"
+    ],
+    answer: 1
+  },
+  {
+    question: "Câu 5:Năm 1995, quốc gia nào ở Đông Nam Á trở thành thành viên thứ 7 của ASEAN?",
+    options: [
+      "Thái Lan",
+      "Việt Nam",
+      "Singapore",
+      "Philippines"
+    ],
+    answer: 1
+  },
+  {
+    question: "Câu 6:Năm 2015, sự kiện quan trọng nào diễn ra ở Đông Nam Á?",
+    options: [
+      "ASEAN thành lập",
+      "ASEAN kết nạp thành viên thứ 6",
+      "ASEAN kết nạp thành viên cuối cùng",
+      "Cộng đồng ASEAN ra đời"
+    ],
+    answer: 3
+  },
+  {
+    question: "Câu 7:Ý tưởng thành lập Cộng đồng ASEAN ra đời khi nào?",
+    options: [
+      "Khi ASEAN đủ 10 thành viên",
+      "Khi Việt Nam gia nhập ASEAN",
+      "Ngay khi ASEAN ra đời (1967)",
+      "Khi Brunei gia nhập ASEAN"
+    ],
+    answer: 2
+  },
+  {
+    question: "Câu 8:Cộng đồng ASEAN không bao gồm liên kết nào sau đây?",
+    options: [
+      "Liên kết Chính trị – an ninh",
+      "Liên kết Chính trị – quân sự",
+      "Liên kết Kinh tế",
+      "Liên kết Văn hóa – xã hội"
+    ],
+    answer: 1
+  },
+  {
+    question: "Câu 9:Sự kiện nào là bối cảnh dẫn đến Cách mạng tháng Tám 1945 ở Việt Nam?",
+    options: [
+      "Quân Đồng minh tấn công Nhật ở Đại Tây Dương",
+      "Nhật hoàng đầu hàng Đồng minh không điều kiện",
+      "Liên Xô tiêu diệt quân Quan Đông",
+      "Mỹ ném bom Hi-rô-si-ma"
+    ],
+    answer: 1
+  },
+  {
+    question: "Câu 10:Bốn tỉnh giành được chính quyền sớm nhất trong Cách mạng tháng Tám 1945 là",
+    options: [
+      "Bắc Ninh, Hải Dương, Hà Tĩnh, Quảng Nam",
+      "Hải Dương, Nghệ An, Hà Tĩnh, Quảng Nam",
+      "Bắc Giang, Hải Dương, Hà Tĩnh, Quảng Nam",
+      "Hà Nam, Hải Dương, Hưng Yên, Quảng Nam"
+    ],
+    answer: 2
+  },
+{
+  question: "Câu 11:Từ ngày 19 đến ngày 25-8-1945, khởi nghĩa lần lượt thắng lợi ở những địa phương nào sau đây?",
+  options: [
+    "Hà Nội, Huế, Sài Gòn",
+    "Huế, Sài Gòn, Hà Nội",
+    "Huế, Hà Nội, Sài Gòn",
+    "Sài Gòn, Huế, Hà Nội"
+  ],
+  answer: 0
+},
+{
+  question: "Câu 12:Một trong những nguyên nhân khách quan đưa đến thắng lợi của Cách mạng tháng Tám năm 1945 là",
+  options: [
+    "Sự đoàn kết, giúp đỡ lẫn nhau của nhân dân các nước Đông Nam Á sau Chiến tranh thế giới thứ hai",
+    "Thắng lợi của Hồng quân Liên Xô và quân Đồng minh trong cuộc chiến tranh chống chủ nghĩa phát xít",
+    "Sự giúp đỡ, ủng hộ của nhân dân tiến bộ trên thế giới, trong đó có nhân dân Pháp",
+    "Sự giúp đỡ của Hồng quân Liên Xô và quân Đồng minh đối với Việt Nam"
+  ],
+  answer: 1
+},
+{
+  question: "Câu 13:Một trong bài học kinh nghiệm quan trọng của Cách mạng tháng Tám năm 1945 còn nguyên vẹn giá trị đến ngày nay là",
+  options: [
+    "Tranh thủ sự ủng hộ về chính trị, giúp đỡ về kinh tế của các nước trong phe xã hội chủ nghĩa",
+    "Phát huy nội lực trong nước, đồng thời tận dụng những điều kiện thuận lợi từ bên ngoài",
+    "Xây dựng nhà nước pháp quyền của nhân dân, do nhân dân, vì nhân dân",
+    "Chú trọng và tranh thủ sự ủng hộ rộng rãi của dư luận thế giới"
+  ],
+  answer: 1
+},
+{
+  question: "Câu 14:Một trong những kết quả của Cách mạng tháng Tám năm 1945 ở Việt Nam là",
+  options: [
+    "Buộc Nhật Bản phải đầu hàng quân Đồng minh vô điều kiện",
+    "Chính phủ nước Việt Nam Dân chủ Cộng hòa ra đời",
+    "Mặt trận Việt Minh ra đời tập hợp quần chúng đấu tranh",
+    "Phong trào công nhân chuyển sang đấu tranh tự giác"
+  ],
+  answer: 1
+},
+{
+  question: "Câu 15:Những chiến dịch lớn trong cuộc kháng chiến chống thực dân Pháp từ năm 1947 đến năm 1954 lần lượt là",
+  options: [
+    "Chiến dịch Việt Bắc, chiến dịch Hạ Lào, chiến dịch Điện Biên Phủ",
+    "Chiến dịch Việt Bắc, chiến dịch Biên giới, chiến dịch Điện Biên Phủ",
+    "Chiến dịch Biên giới, chiến dịch Đường 9, chiến dịch Điện Biên Phủ",
+    "Chiến dịch Việt Bắc, chiến dịch Tây Nguyên, chiến dịch Điện Biên Phủ"
+  ],
+  answer: 1
+},
+{
+  question: "Câu 16:Những yếu tố nào sau đây có tác động to lớn đến tình hình Việt Nam trong kháng chiến chống Pháp?",
+  options: [
+    "Sự thiết lập của trật tự thế giới đa cực, sự chi phối của Mỹ",
+    "Sự tồn tại của Trật tự thế giới hai cực I-an-ta, Chiến tranh lạnh",
+    "Tình trạng chạy đua vũ trang giữa các nước, trật tự đơn cực",
+    "Sự thiết lập Trật tự Véc-xai - Oa-sinh-tơn, Chiến tranh lạnh"
+  ],
+  answer: 1
+},
+{
+  question: "Câu 17:Đường lối kháng chiến của cuộc kháng chiến toàn quốc chống thực dân Pháp là",
+  options: [
+    "Tranh thủ sự ủng hộ của nhân loại tiến bộ",
+    "Trường kì kháng chiến nhất định thắng lợi",
+    "Tự lực, toàn dân, toàn diện, lâu dài, từng bước tranh thủ sự ủng hộ của cộng đồng quốc tế",
+    "Toàn dân, toàn diện, trường kì, tự lực cánh sinh và tranh thủ sự ủng hộ của quốc tế"
+  ],
+  answer: 3
+},
+{
+    question: "Câu 18:Chiến dịch Việt Bắc thu - đông năm 1947 thắng lợi đã",
+    options: [
+      "xoay đổi toàn bộ cục diện kháng chiến.",
+      "tiêu diệt toàn bộ lực lượng Pháp.",
+      "đẩy quân Pháp vào thế bị động.",
+      "làm phá sản hoàn toàn kế hoạch “đánh nhanh, thắng nhanh”."
+    ],
+    answer: 3
+  },
+  {
+    question: "Câu 19:Chiến dịch nào được mở nhằm khai thông biên giới Việt – Trung?",
+    options: [
+      "Việt Bắc 1947.",
+      "Điện Biên Phủ 1954.",
+      "Biên giới thu - đông 1950.",
+      "Hoàng Hoa Thám 1951."
+    ],
+    answer: 2
+  },
+  {
+    question: "Câu 20:Đại hội đại biểu toàn quốc lần thứ II của Đảng năm 1951 đã quyết định",
+    options: [
+      "đưa Đảng ra hoạt động công khai với tên gọi Đảng Lao động Việt Nam.",
+      "đổi tên thành Đảng Cộng sản Việt Nam.",
+      "mở cuộc Tiến công Đông - Xuân 1952-1953.",
+      "thành lập Liên minh Việt – Xiêm – Lào."
+    ],
+    answer: 0
+  },
+  {
+    question: "Câu 21:Cuộc chiến tranh bảo vệ Tổ quốc từ sau tháng 4-1975 diễn ra trong bối cảnh",
+    options: [
+      "Chiến tranh lạnh đỉnh cao.",
+      "xu thế đa cực đã xác lập.",
+      "Chiến tranh lạnh kết thúc.",
+      "xu thế hòa hoãn Đông – Tây, quan hệ các nước lớn phức tạp."
+    ],
+    answer: 3
+  },
+  {
+    question: "Câu 22:Quân đội nhân dân Việt Nam đã hành động thế nào trước cuộc tấn công của Pôn Pốt cuối năm 1978?",
+    options: [
+      "phản công và dừng ở biên giới.",
+      "phản công, đánh bật lực lượng Pôn Pốt ra khỏi lãnh thổ.",
+      "đàm phán ngoại giao.",
+      "đấu tranh chính trị."
+    ],
+    answer: 1
+  },
+  {
+    question: "Câu 23:Trong giai đoạn 1984 - 1989, chiến trường ác liệt giữa Việt Nam và Trung Quốc là",
+    options: [
+      "Bát Xát (Lào Cai).",
+      "một số huyện Lào Cai, Điện Biên.",
+      "Vị Xuyên (Cao Bằng).",
+      "Vị Xuyên (Hà Giang)."
+    ],
+    answer: 3
+  },
+  {
+    question: "Câu 24:Trong bảo vệ chủ quyền ở Biển Đông, Việt Nam kiên định con đường",
+    options: [
+      "bảo vệ lợi ích khu vực.",
+      "đấu tranh bằng mọi biện pháp.",
+      "đấu tranh bằng các biện pháp phù hợp với luật pháp quốc tế.",
+      "bảo vệ hòa bình theo luật pháp khu vực."
+    ],
+    answer: 2
+  },
+
+];
+
+
+
+/* ====== BIẾN ====== */
+let index = 0;
+let score = 0;
+
+/* ====== HIỂN THỊ CÂU HỎI ====== */
+function loadQuestion() {
+    if (index >= questions.length) {
+        document.querySelector(".quiz-box").innerHTML =
+            `<h2>🎉 Hoàn thành!</h2>
+             <p>Điểm của bạn: ${score}</p>`;
+        return;
+    }
+
+    let q = questions[index];
+    document.getElementById("question").innerText = q.question;
+
+    let optionsHTML = "";
+    q.options.forEach((opt, i) => {
+        optionsHTML += `
+            <div class="option" onclick="checkAnswer(${i})">
+                ${opt}
+            </div>`;
+    });
+
+    document.getElementById("options").innerHTML = optionsHTML;
+    document.getElementById("result").innerText = "";
+}
+
+/* ====== KIỂM TRA ĐÁP ÁN ====== */
+function checkAnswer(choice) {
+    let correct = questions[index].answer;
+
+    if (choice === correct) {
+        score += 10;
+        document.getElementById("result").innerText = "✅ Đúng!";
+    } else {
+        document.getElementById("result").innerText = "❌ Sai!";
+    }
+
+    document.getElementById("score").innerText = "Điểm: " + score;
+    index++;
+
+    setTimeout(loadQuestion, 700);
+}
+
+/* ====== CHẠY ====== */
+loadQuestion();
+</script>
+
+</body>
+</html>
